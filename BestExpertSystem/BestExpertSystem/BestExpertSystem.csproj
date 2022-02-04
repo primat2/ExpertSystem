@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{99C93CDE-2388-44E4-B058-07563AD60054}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>BestExpertSystem</RootNamespace>
+    <AssemblyName>BestExpertSystem</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Forms_ES\Work\AddFactForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms_ES\Work\AddFactForm.Designer.cs">
+      <DependentUpon>AddFactForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms_ES\ConsultationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms_ES\ConsultationForm.Designer.cs">
+      <DependentUpon>ConsultationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CORE\ExpertSystem.cs" />
+    <Compile Include="CORE\ExplainSystem.cs" />
+    <Compile Include="DATA_TYPES\OrderedList.cs" />
+    <Compile Include="Forms_ES\Work\DomainAddForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms_ES\Work\DomainAddForm.Designer.cs">
+      <DependentUpon>DomainAddForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms_ES\Application.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms_ES\Application.Designer.cs">
+      <DependentUpon>Application.cs</DependentUpon>
+    </Compile>
+    <Compile Include="INFRASTRUCTURE\IOrdered.cs" />
+    <Compile Include="MODEL\Domain.cs" />
+    <Compile Include="MODEL\Fact.cs" />
+    <Compile Include="MODEL\MemoryComponent.cs" />
+    <Compile Include="MODEL\Rule.cs" />
+    <Compile Include="MODEL\Variable.cs" />
+    <Compile Include="MODEL\VariableValue.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Forms_ES\Work\RuleAddForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms_ES\Work\RuleAddForm.Designer.cs">
+      <DependentUpon>RuleAddForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms_ES\Work\RuleNewAddForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms_ES\Work\RuleNewAddForm.Designer.cs">
+      <DependentUpon>RuleNewAddForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms_ES\TMP\TestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms_ES\TMP\TestForm.Designer.cs">
+      <DependentUpon>TestForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI_LOGICK\UI_Domain.cs" />
+    <Compile Include="UI_LOGICK\UI_Rule.cs" />
+    <Compile Include="UI_LOGICK\UI_Variable.cs" />
+    <Compile Include="UI_LOGICK\Util.cs" />
+    <Compile Include="Forms_ES\Work\VariableAddForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms_ES\Work\VariableAddForm.Designer.cs">
+      <DependentUpon>VariableAddForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms_ES\Work\AddFactForm.resx">
+      <DependentUpon>AddFactForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms_ES\ConsultationForm.resx">
+      <DependentUpon>ConsultationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms_ES\Work\DomainAddForm.resx">
+      <DependentUpon>DomainAddForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms_ES\Application.resx">
+      <DependentUpon>Application.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms_ES\Work\RuleAddForm.resx">
+      <DependentUpon>RuleAddForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms_ES\Work\RuleNewAddForm.resx">
+      <DependentUpon>RuleNewAddForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms_ES\TMP\TestForm.resx">
+      <DependentUpon>TestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms_ES\Work\VariableAddForm.resx">
+      <DependentUpon>VariableAddForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
