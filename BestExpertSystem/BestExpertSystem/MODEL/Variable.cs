@@ -45,6 +45,17 @@ namespace BestExpertSystem.MODEL
             variableType = VarType;
         }
 
+
+
+        //public Variable(string Name, string Question, string Domain, string VarType)
+        //{
+        //    order = -1;
+        //    name = Name;
+        //    question = Question;
+        //    domain = Domain;
+        //    variableType = VarType;
+        //}
+
         public override string ToString()
         {
             return name;

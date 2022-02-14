@@ -80,9 +80,11 @@ namespace BestExpertSystem
             SocketClient client = new SocketClient(ipAddress, 23000);
             this.valueGetEvent = new ManualResetEvent(false);
             //client.ConnectToServer(valueGetEvent);
-            Task.Run(() => client.ConnectToServer(valueGetEvent));
-            valueGetEvent.WaitOne();
-            valueGetEvent.Reset();
+
+
+            //Task.Run(() => client.ConnectToServer(valueGetEvent));
+            //valueGetEvent.WaitOne();
+            //valueGetEvent.Reset();
 
 
             // Managing events
@@ -95,39 +97,7 @@ namespace BestExpertSystem
             UI_RuleWorker = new UI_LOGICK.UI_Rule(this);
 
 
-            //memory.rules.Add(new MODEL.Rule("Rule 1", "2", "3", "4"));
-
-            //memory.domains = new List<MODEL.Domain>();
-            memory.domains = new DATA_TYPES.OrderedList<MODEL.Domain>();
-            //MODEL.Domain IQ = memory.domains.Add(new MODEL.Domain("IQ", new List<string>(){ "LOW", "HIGH" }));
-            //MODEL.Domain Income = memory.domains.Add(new MODEL.Domain("INCOME", new List<string>(){ "POOR", "MID", "RICH" }));
-            //memory.domains.Add(new MODEL.Domain("FRINDES", new List<string>(){ "FEW", "AVERAGE", "MANY" }));
-
-            var domainSeason = memory.domains.Add(new MODEL.Domain("Seasons", new List<string>() { "Winter", "Spring", "Summer", "Automn" }));
-            var domainThings = memory.domains.Add(new MODEL.Domain("Loved things", new List<string>() { "Snow", "Sun", "Games" }));
-            var domainActivities = memory.domains.Add(new MODEL.Domain("Activitis", new List<string>() { "Go camping", "Go to beach", "Play games", "Stay home", "Go to mountains" }));
-            var domainTraits = memory.domains.Add(new MODEL.Domain("Traits", new List<string>() { "Homesitting", "Deadinside", "Active", "Naughty" }));
-
-            memory.variables = new DATA_TYPES.OrderedList<MODEL.Variable>();
-            var varLove = memory.variables.Add(new MODEL.Variable("Love", "What do you love?", domainThings, MODEL.VariableType.Requested));
-            var varChar = memory.variables.Add(new MODEL.Variable("Char", "What is your personality?", domainTraits, MODEL.VariableType.Requested));
-            var varVacTime = memory.variables.Add(new MODEL.Variable("VacationTime", "What season do you like most?", domainSeason, MODEL.VariableType.RequestedDeducible));
-            var varVacActivity = memory.variables.Add(new MODEL.Variable("VacationActivity", "-", domainActivities, MODEL.VariableType.Deducible));
-
-            memory.rules = new DATA_TYPES.OrderedList<MODEL.Rule>();
-            memory.rules.Add(
-                new MODEL.Rule("Rule 1",
-                    new List<MODEL.Fact>() { new MODEL.Fact(varVacTime, new MODEL.VariableValue("Summer")), new MODEL.Fact(varChar, new MODEL.VariableValue("Active")) },
-                    new List<MODEL.Fact>() { new MODEL.Fact(varVacActivity, new MODEL.VariableValue("Go to mountains")) },
-                    "Mountains rule!"
-            ));
-
-            memory.rules.Add(
-                new MODEL.Rule("Rule 2",
-                    new List<MODEL.Fact>() { new MODEL.Fact(varLove, new MODEL.VariableValue("Sun")) },
-                    new List<MODEL.Fact>() { new MODEL.Fact(varVacTime, new MODEL.VariableValue("Summer")) },
-                    "Clear as a summer day"
-            ));
+            LoadData();
 
             InitializeComponent();
         }
@@ -135,7 +105,6 @@ namespace BestExpertSystem
 
         private void GetServerIP()
         {
-            // *** DB Connection ***
             using (SqlConnection cnn = new SqlConnection(connectionString))
             {
                 cnn.Open();
@@ -150,8 +119,161 @@ namespace BestExpertSystem
                 cnn.Close();
             }
 
-            // *** End ***
         }
+
+        private void LoadData()
+        {
+            memory.domains = new DATA_TYPES.OrderedList<MODEL.Domain>();
+            memory.variables = new DATA_TYPES.OrderedList<MODEL.Variable>();
+            memory.rules = new DATA_TYPES.OrderedList<MODEL.Rule>();
+
+            using (SqlConnection cnn = new SqlConnection(connectionString))
+            {
+                cnn.Open();
+
+                // *** GETTING DOMAINS ***
+                string sqlGetDomainsCount = "SELECT COUNT(*) FROM VarDomains";
+                SqlCommand sqlCommand = new SqlCommand(sqlGetDomainsCount, cnn);
+                int numberOfDomains = (int)sqlCommand.ExecuteScalar();
+
+                for (int i = 1; i <= numberOfDomains; i++)
+                {
+                    MODEL.Domain newDomain;
+                    string domainName = "";
+                    List<string> domainValues = new List<string>();
+
+                    string sql_getDomains = "SELECT * FROM VarDomains JOIN DomainValues ON VarDomains.id = DomainValues.domain_id WHERE VarDomains.id = @domID";
+                    SqlCommand sqlCommand2 = new SqlCommand(sql_getDomains, cnn);
+                    sqlCommand2.Parameters.AddWithValue("@domID", i);
+                    SqlDataReader reader = sqlCommand2.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        domainName = (string)reader.GetValue(reader.GetOrdinal("name"));
+                        string domainValue = (string)reader.GetValue(reader.GetOrdinal("value"));
+                        domainValues.Add(domainValue);
+
+                    }
+
+                    newDomain = new MODEL.Domain(domainName, domainValues);
+                    memory.domains.Add(newDomain);
+                    reader.Close();
+                }
+
+
+                // *** GETTING VARIABLES ***
+                //string sqlGetVariablesCount = "SELECT COUNT(*) FROM Variables";
+                //SqlCommand sqlCommand3 = new SqlCommand(sqlGetVariablesCount, cnn);
+                //int numberOfVars = (int)sqlCommand.ExecuteScalar();
+
+                string sql_getVariables = "SELECT * FROM Variables JOIN VarDomains ON Variables.domain_id = VarDomains.id";
+                SqlCommand sqlCommandVars = new SqlCommand(sql_getVariables, cnn);
+                SqlDataReader readerVars = sqlCommandVars.ExecuteReader();
+
+                while (readerVars.Read())
+                {
+                    string varName = (string)readerVars.GetValue(readerVars.GetOrdinal("name"));
+                    string question = (string)readerVars.GetValue(readerVars.GetOrdinal("question"));
+                    string domainName = (string)readerVars.GetValue(7);
+                    string var_type = (string)readerVars.GetValue(readerVars.GetOrdinal("var_type"));
+
+                    var newVar = new MODEL.Variable(varName, question, memory.ParseDomain(domainName), memory.ParseVarType(var_type));
+                    memory.variables.Add(newVar);
+                }
+                readerVars.Close();
+
+
+                // *** GETTING RULES ***
+                List<MODEL.Fact> premises = new List<MODEL.Fact>(); 
+                List<MODEL.Fact> conclusions = new List<MODEL.Fact>(); 
+
+                // GETTING THE NUMBER OF RULES
+                string sqlNumOfRules = "SELECT COUNT(DISTINCT rule_id) FROM Facts";
+                SqlCommand commandNumOfFacts = new SqlCommand(sqlNumOfRules, cnn);
+                int numberOfRules = (int)commandNumOfFacts.ExecuteScalar();
+
+                for (int i = 1; i <= numberOfRules; i++)
+                {
+                    string ruleName = "";
+                    string explain = "";
+                    // GETTING NAME AND EXPLAIN
+                    string ruleInfo = "SELECT * FROM EsRules WHERE EsRules.id = @ruleID";
+                    SqlCommand ruleInfoCommand = new SqlCommand(ruleInfo, cnn);
+                    ruleInfoCommand.Parameters.AddWithValue("@ruleID", i);
+                    SqlDataReader ruleInfoReader = ruleInfoCommand.ExecuteReader();
+                    ruleInfoReader.Read();
+                    ruleName = (string)ruleInfoReader.GetValue(ruleInfoReader.GetOrdinal("name"));
+                    explain = (string)ruleInfoReader.GetValue(ruleInfoReader.GetOrdinal("explain"));
+                    ruleInfoReader.Close();
+
+                    // GETTING PREMISES
+                    string sqlPremisesFacts = "SELECT * FROM Facts JOIN Variables ON Facts.var_id = Variables.id WHERE Facts.rule_id = @ruleID AND Facts.is_premise = 1";
+                    SqlCommand commandPremisesFacts = new SqlCommand(sqlPremisesFacts, cnn);
+                    commandPremisesFacts.Parameters.AddWithValue("@ruleID", i);
+                    SqlDataReader readerPremisesFacts = commandPremisesFacts.ExecuteReader();
+
+                    while (readerPremisesFacts.Read())
+                    {
+                        string varName = (string)readerPremisesFacts.GetValue(readerPremisesFacts.GetOrdinal("name"));
+                        string factValue = (string)readerPremisesFacts.GetValue(readerPremisesFacts.GetOrdinal("value"));
+
+                        var newFact = new MODEL.Fact(memory.ParseVariable(varName), new MODEL.VariableValue(factValue));
+                        premises.Add(newFact);
+                    }
+                    readerPremisesFacts.Close();
+
+                    // GETTING CONCLUSIONS
+                    string sqlConclusionFacts = "SELECT * FROM Facts JOIN Variables ON Facts.var_id = Variables.id WHERE Facts.rule_id = @ruleID AND Facts.is_premise = 0";
+                    SqlCommand commandConclusionFacts = new SqlCommand(sqlConclusionFacts, cnn);
+                    commandConclusionFacts.Parameters.AddWithValue("@ruleID", i);
+                    SqlDataReader readerConclusionFacts = commandConclusionFacts.ExecuteReader();
+
+                    while (readerConclusionFacts.Read())
+                    {
+                        string varName = (string)readerConclusionFacts.GetValue(readerConclusionFacts.GetOrdinal("name"));
+                        string factValue = (string)readerConclusionFacts.GetValue(readerConclusionFacts.GetOrdinal("value"));
+
+                        var newFact = new MODEL.Fact(memory.ParseVariable(varName), new MODEL.VariableValue(factValue));
+                        conclusions.Add(newFact);
+                    }
+                    readerConclusionFacts.Close();
+
+                    var newRule = new MODEL.Rule(ruleName, premises, conclusions, explain);
+                    memory.rules.Add(newRule);
+                }
+
+
+                cnn.Close();
+            }
+
+
+     
+            //var domainSeason = memory.domains.Add(new MODEL.Domain("Seasons", new List<string>() { "Winter", "Spring", "Summer", "Automn" }));
+            //var domainThings = memory.domains.Add(new MODEL.Domain("Loved things", new List<string>() { "Snow", "Sun", "Games" }));
+            //var domainActivities = memory.domains.Add(new MODEL.Domain("Activitis", new List<string>() { "Go camping", "Go to beach", "Play games", "Stay home", "Go to mountains" }));
+            //var domainTraits = memory.domains.Add(new MODEL.Domain("Traits", new List<string>() { "Homesitting", "Deadinside", "Active", "Naughty" }));
+
+            //var varLove = memory.variables.Add(new MODEL.Variable("Love", "What do you love?", domainThings, MODEL.VariableType.Requested));
+            //var varChar = memory.variables.Add(new MODEL.Variable("Char", "What is your personality?", domainTraits, MODEL.VariableType.Requested));
+            //var varVacTime = memory.variables.Add(new MODEL.Variable("VacationTime", "What season do you like most?", domainSeason, MODEL.VariableType.RequestedDeducible));
+            //var varVacActivity = memory.variables.Add(new MODEL.Variable("VacationActivity", "-", domainActivities, MODEL.VariableType.Deducible));
+
+            
+            //memory.rules.Add(
+            //    new MODEL.Rule("Rule 1",
+            //        new List<MODEL.Fact>() { new MODEL.Fact(varVacTime, new MODEL.VariableValue("Summer")), new MODEL.Fact(varChar, new MODEL.VariableValue("Active")) },
+            //        new List<MODEL.Fact>() { new MODEL.Fact(varVacActivity, new MODEL.VariableValue("Go to mountains")) },
+            //        "Mountains rule!"
+            //));
+
+            //memory.rules.Add(
+            //    new MODEL.Rule("Rule 2",
+            //        new List<MODEL.Fact>() { new MODEL.Fact(varLove, new MODEL.VariableValue("Sun")) },
+            //        new List<MODEL.Fact>() { new MODEL.Fact(varVacTime, new MODEL.VariableValue("Summer")) },
+            //        "Clear as a summer day"
+            //));
+        }
+
 
 
         private void Form1_Load(object sender, EventArgs e)

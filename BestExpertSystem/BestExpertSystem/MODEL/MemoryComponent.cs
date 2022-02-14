@@ -141,5 +141,40 @@ namespace BestExpertSystem.MODEL
                 domainsChanged?.Invoke();
             }
         }
+
+
+        public Domain ParseDomain(string domain)
+        {
+            foreach (Domain dom in domains)
+            {
+                if (domain == dom.name)
+                {
+                    return dom;
+                }
+            }
+            throw new Exception("Cannot cast");
+        }
+
+        public VariableType ParseVarType(string varType)
+        {
+            if (varType == VariableType.Deducible.ToString()) return VariableType.Deducible;
+            if (varType == VariableType.Requested.ToString()) return VariableType.Requested;
+            if (varType == VariableType.RequestedDeducible.ToString()) return VariableType.RequestedDeducible;
+
+            throw new Exception("Cannot cast");
+        }
+
+        public Variable ParseVariable(string strVar)
+        {
+            foreach (Variable vari in variables)
+            {
+                if (strVar == vari.name)
+                {
+                    return vari;
+                }
+            }
+            throw new Exception("Cannot cast");
+        }
+
     }
 }
