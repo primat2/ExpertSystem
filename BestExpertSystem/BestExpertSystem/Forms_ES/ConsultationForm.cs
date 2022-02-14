@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 
+
 namespace BestExpertSystem
 {
     public partial class ConsultationForm : Form

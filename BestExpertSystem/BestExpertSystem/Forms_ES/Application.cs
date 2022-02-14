@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Net;
 using System.Data.SqlClient;
-
+using System.Threading;
 
 namespace BestExpertSystem
 {
@@ -41,6 +41,13 @@ namespace BestExpertSystem
         // *** CORE ***
         private CORE.ExpertSystem expertSystem;
 
+
+        // *** Networking ***
+        private IPAddress ipAddress;
+        private string strPortInput = "23000";
+        private ManualResetEvent valueGetEvent;
+
+
         // *******************
         // Working with memory
         // *******************
@@ -60,13 +67,22 @@ namespace BestExpertSystem
             UI_LOGICK.Util.UpdateListView(ListViewRules, memory.rules);
         }
 
-        string connectionString = "Server=LAPTOP-0NS5LUQ8;Database=ExpertSystems;Trusted_Connection=True;";
+        //string connectionString = "Server=LAPTOP-0NS5LUQ8;Database=ExpertSystems;Trusted_Connection=True;";
+        string connectionString = "Server=tcp:primatserver.database.windows.net,1433;Initial Catalog=ExpertSystemDB;Persist Security Info=False;User ID=primat;Password=Ilyamechmat90;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public Application()
         {
             instance = this;
             memory = new MODEL.MemoryComponent();
             expertSystem = new CORE.ExpertSystem(memory);
+
+            GetServerIP();
+            SocketClient client = new SocketClient(ipAddress, 23000);
+            this.valueGetEvent = new ManualResetEvent(false);
+            //client.ConnectToServer(valueGetEvent);
+            Task.Run(() => client.ConnectToServer(valueGetEvent));
+            valueGetEvent.WaitOne();
+            valueGetEvent.Reset();
 
 
             // Managing events
@@ -78,7 +94,7 @@ namespace BestExpertSystem
             UI_VariableWorker = new UI_LOGICK.UI_Variable(this);
             UI_RuleWorker = new UI_LOGICK.UI_Rule(this);
 
-           
+
             //memory.rules.Add(new MODEL.Rule("Rule 1", "2", "3", "4"));
 
             //memory.domains = new List<MODEL.Domain>();
@@ -115,6 +131,28 @@ namespace BestExpertSystem
 
             InitializeComponent();
         }
+
+
+        private void GetServerIP()
+        {
+            // *** DB Connection ***
+            using (SqlConnection cnn = new SqlConnection(connectionString))
+            {
+                cnn.Open();
+
+                string sql = "SELECT * FROM FreeServers WHERE server_load = (SELECT MIN(server_load) FROM FreeServers)";
+                SqlCommand sqlCommand = new SqlCommand(sql, cnn);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                reader.Read();
+                string strIp = (string)reader.GetValue(1);
+
+                ipAddress = IPAddress.Parse(strIp);
+                cnn.Close();
+            }
+
+            // *** End ***
+        }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
