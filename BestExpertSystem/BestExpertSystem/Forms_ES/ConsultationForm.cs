@@ -9,12 +9,32 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 
 namespace BestExpertSystem
 {
+    public class TransferObj
+    {
+        public int ES_id { get; set; }
+        public string GoalVar { get; set; }
+        public string Question { get; set; }
+        public string Answer { get; set; }
+
+        public TransferObj(int es_id = -1, string goalVar = "", string question = "", string answer = "")
+        {
+            ES_id = es_id;
+            GoalVar = goalVar;
+            Question = question;
+            Answer = answer;
+        }
+    }
+
+
     public partial class ConsultationForm : Form
     {
-        enum ConsultationState { None, ChooseGoal, Dialog };
+        enum ConsultationState { None, ChooseGoal, Dialog, WaitingServer };
 
         private MODEL.MemoryComponent memory;
         private CORE.ExpertSystem expertSystem;
@@ -25,10 +45,24 @@ namespace BestExpertSystem
         private MODEL.VariableValue currentValue;
         private ManualResetEvent valueGetEvent;
 
+        private SocketClient connectionToServer;
 
-        public ConsultationForm(MODEL.MemoryComponent Memory, CORE.ExpertSystem ExpertSystem, Application App)
+        ConsultationState State
+        {
+            get { return state; }
+            set
+            {
+                if (value == ConsultationState.WaitingServer) BtnDialogResponse.Enabled = false;
+                if (value == ConsultationState.Dialog) BtnDialogResponse.Enabled = true;
+                state = value;
+            }
+        }
+
+
+        public ConsultationForm(SocketClient ConnectionToServer, MODEL.MemoryComponent Memory, CORE.ExpertSystem ExpertSystem, Application App)
         {
             InitializeComponent();
+            connectionToServer = ConnectionToServer;
             this.valueGetEvent = new ManualResetEvent(false);
 
             memory = Memory;
@@ -40,7 +74,7 @@ namespace BestExpertSystem
 
         private void ChooseConsultationGoal()
         {
-            state = ConsultationState.ChooseGoal;
+            State = ConsultationState.ChooseGoal;
             var availableVariables = memory.variables.Where(
                 t => t.variableType == MODEL.VariableType.Deducible).ToArray();
 
@@ -53,20 +87,56 @@ namespace BestExpertSystem
         {
             if (CB_DialogAnswers.SelectedItem == null) return;
 
-            if (state == ConsultationState.ChooseGoal)
+            if (State == ConsultationState.ChooseGoal)
             {
                 consultationGoal = (MODEL.Variable)CB_DialogAnswers.SelectedItem;
-                state = ConsultationState.Dialog;
-                Task.Run(() => expertSystem.DeduceGoalVariable(consultationGoal));
-                int x = 5;
+                State = ConsultationState.WaitingServer;
+                //Task.Run(() => expertSystem.DeduceGoalVariable(consultationGoal));
+                Task.Run(() => StartDeducingVariable(consultationGoal));
                 return;
             }
-            else if (state == ConsultationState.Dialog)
+            else if (State == ConsultationState.Dialog)
             {
                 currentValue = (MODEL.VariableValue)CB_DialogAnswers.SelectedItem;
+                State = ConsultationState.WaitingServer;
                 this.valueGetEvent.Set();
             }
         }
+
+
+        //private string void MySerialize(object obj)
+        //{
+        //    return 
+        //}
+
+        private async void StartDeducingVariable(MODEL.Variable variable)
+        {
+            var trO = new TransferObj(es_id: 1, goalVar: variable.name);
+            string jsonified = JsonSerializer.Serialize(trO) + "\n!";
+            await connectionToServer.SendToServer(jsonified);
+
+            State = ConsultationState.WaitingServer;
+
+            await connectionToServer.ReadLineAsync((t) => OnServerQuestionRecieved(t));
+
+        }
+
+
+
+
+
+        public void OnServerQuestionRecieved(TransferObj trOb)
+        {
+            var varQ = memory.ParseVariable(trOb.GoalVar);
+            BeginInvoke(new Action(() =>
+            {
+                lb_Dialog.Text = varQ.question;
+                CB_DialogAnswers.Items.Clear();
+                CB_DialogAnswers.Items.AddRange(varQ.domain.values.ToArray());
+                State = ConsultationState.Dialog;
+            }));
+        }
+
 
         public MODEL.VariableValue AskNextQuestion(MODEL.Variable variable)
         {

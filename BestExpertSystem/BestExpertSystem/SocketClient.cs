@@ -7,6 +7,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 
 namespace BestExpertSystem
 {
@@ -245,10 +248,7 @@ namespace BestExpertSystem
                     Console.WriteLine(string.Format("Received bytes: {0} - Message: {1}",
                         readByteCount, new string(buff)));
 
-                    OnRaiseTextReceivedEvent(
-                    new TextReceivedEventArgs(
-                    Convert.ToString(mClient.Client.RemoteEndPoint),
-                    new string(buff)));
+                    OnRaiseTextReceivedEvent(new TextReceivedEventArgs(Convert.ToString(mClient.Client.RemoteEndPoint), new string(buff)));
 
 
                     Array.Clear(buff, 0, buff.Length);
@@ -262,8 +262,9 @@ namespace BestExpertSystem
         }
 
 
-        private async Task ReadLineAsync(TcpClient mClient)
+        public async Task ReadLineAsync(Action<TransferObj> onCallback)
         {
+
             try
             {
                 StreamReader clientStreamReader = new StreamReader(mClient.GetStream());
@@ -271,7 +272,18 @@ namespace BestExpertSystem
 
                 while (true)
                 {
-                    receivedLine = await clientStreamReader.ReadLineAsync();
+                    //receivedLine = await clientStreamReader.ReadLineAsync();
+
+                    bool end = false;
+                    while (!end)
+                    {
+                        string newLine = await clientStreamReader.ReadLineAsync();
+                        if (newLine == "!") break;
+
+                        receivedLine += newLine;
+                    }
+
+                    var trO = JsonSerializer.Deserialize<TransferObj>(receivedLine);
 
                     if (receivedLine.Length <= 0)
                     {
@@ -284,10 +296,8 @@ namespace BestExpertSystem
                     Console.WriteLine(string.Format("Received bytes: {0} - Message: {1}",
                         receivedLine.Length, receivedLine));
 
-                    OnRaiseTextReceivedEvent(
-                    new TextReceivedEventArgs(
-                   Convert.ToString(mClient.Client.RemoteEndPoint),
-                   receivedLine));
+                    onCallback.Invoke(trO);
+                    OnRaiseTextReceivedEvent(new TextReceivedEventArgs(Convert.ToString(mClient.Client.RemoteEndPoint),receivedLine));
 
                     receivedLine = string.Empty;
                 }

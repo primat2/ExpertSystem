@@ -46,6 +46,7 @@ namespace BestExpertSystem
         private IPAddress ipAddress;
         private string strPortInput = "23000";
         private ManualResetEvent valueGetEvent;
+        SocketClient connectionToServer;
 
 
         // *******************
@@ -70,6 +71,7 @@ namespace BestExpertSystem
         //string connectionString = "Server=LAPTOP-0NS5LUQ8;Database=ExpertSystems;Trusted_Connection=True;";
         string connectionString = "Server=tcp:primatserver.database.windows.net,1433;Initial Catalog=ExpertSystemDB;Persist Security Info=False;User ID=primat;Password=Ilyamechmat90;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
+
         public Application()
         {
             instance = this;
@@ -77,14 +79,14 @@ namespace BestExpertSystem
             expertSystem = new CORE.ExpertSystem(memory);
 
             GetServerIP();
-            SocketClient client = new SocketClient(ipAddress, 23000);
+            connectionToServer = new SocketClient(ipAddress, 23000);
             this.valueGetEvent = new ManualResetEvent(false);
             //client.ConnectToServer(valueGetEvent);
 
 
-            //Task.Run(() => client.ConnectToServer(valueGetEvent));
-            //valueGetEvent.WaitOne();
-            //valueGetEvent.Reset();
+            Task.Run(() => connectionToServer.ConnectToServer(valueGetEvent));
+            valueGetEvent.WaitOne();
+            valueGetEvent.Reset();
 
 
             // Managing events
@@ -120,6 +122,7 @@ namespace BestExpertSystem
             }
 
         }
+
 
         private void LoadData()
         {
@@ -162,9 +165,6 @@ namespace BestExpertSystem
 
 
                 // *** GETTING VARIABLES ***
-                //string sqlGetVariablesCount = "SELECT COUNT(*) FROM Variables";
-                //SqlCommand sqlCommand3 = new SqlCommand(sqlGetVariablesCount, cnn);
-                //int numberOfVars = (int)sqlCommand.ExecuteScalar();
 
                 string sql_getVariables = "SELECT * FROM Variables JOIN VarDomains ON Variables.domain_id = VarDomains.id";
                 SqlCommand sqlCommandVars = new SqlCommand(sql_getVariables, cnn);
@@ -246,32 +246,6 @@ namespace BestExpertSystem
                 cnn.Close();
             }
 
-
-     
-            //var domainSeason = memory.domains.Add(new MODEL.Domain("Seasons", new List<string>() { "Winter", "Spring", "Summer", "Automn" }));
-            //var domainThings = memory.domains.Add(new MODEL.Domain("Loved things", new List<string>() { "Snow", "Sun", "Games" }));
-            //var domainActivities = memory.domains.Add(new MODEL.Domain("Activitis", new List<string>() { "Go camping", "Go to beach", "Play games", "Stay home", "Go to mountains" }));
-            //var domainTraits = memory.domains.Add(new MODEL.Domain("Traits", new List<string>() { "Homesitting", "Deadinside", "Active", "Naughty" }));
-
-            //var varLove = memory.variables.Add(new MODEL.Variable("Love", "What do you love?", domainThings, MODEL.VariableType.Requested));
-            //var varChar = memory.variables.Add(new MODEL.Variable("Char", "What is your personality?", domainTraits, MODEL.VariableType.Requested));
-            //var varVacTime = memory.variables.Add(new MODEL.Variable("VacationTime", "What season do you like most?", domainSeason, MODEL.VariableType.RequestedDeducible));
-            //var varVacActivity = memory.variables.Add(new MODEL.Variable("VacationActivity", "-", domainActivities, MODEL.VariableType.Deducible));
-
-            
-            //memory.rules.Add(
-            //    new MODEL.Rule("Rule 1",
-            //        new List<MODEL.Fact>() { new MODEL.Fact(varVacTime, new MODEL.VariableValue("Summer")), new MODEL.Fact(varChar, new MODEL.VariableValue("Active")) },
-            //        new List<MODEL.Fact>() { new MODEL.Fact(varVacActivity, new MODEL.VariableValue("Go to mountains")) },
-            //        "Mountains rule!"
-            //));
-
-            //memory.rules.Add(
-            //    new MODEL.Rule("Rule 2",
-            //        new List<MODEL.Fact>() { new MODEL.Fact(varLove, new MODEL.VariableValue("Sun")) },
-            //        new List<MODEL.Fact>() { new MODEL.Fact(varVacTime, new MODEL.VariableValue("Summer")) },
-            //        "Clear as a summer day"
-            //));
         }
 
 
@@ -718,7 +692,7 @@ namespace BestExpertSystem
 
         private void начатьКонсультациюToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var consultationForm = new ConsultationForm(memory, expertSystem, this);
+            var consultationForm = new ConsultationForm(connectionToServer, memory, expertSystem, this);
             expertSystem.InitES(consultationForm);
             DialogResult dResult = consultationForm.ShowDialog();
 
