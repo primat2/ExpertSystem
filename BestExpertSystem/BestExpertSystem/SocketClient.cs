@@ -305,7 +305,7 @@ namespace BestExpertSystem
             catch (Exception excp)
             {
                 Console.WriteLine(excp.ToString());
-                throw;
+                //throw;
             }
         }
     }

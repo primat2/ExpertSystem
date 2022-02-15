@@ -97,17 +97,27 @@ namespace BestExpertSystem
             }
             else if (State == ConsultationState.Dialog)
             {
+                // todo: run task send these data to server
                 currentValue = (MODEL.VariableValue)CB_DialogAnswers.SelectedItem;
                 State = ConsultationState.WaitingServer;
                 this.valueGetEvent.Set();
+                Task.Run(() => ContinueDecucing(currentValue));
+                
             }
         }
 
 
-        //private string void MySerialize(object obj)
-        //{
-        //    return 
-        //}
+        private async void ContinueDecucing(MODEL.VariableValue variable)
+        {
+            var trO = new TransferObj(answer: variable.value);
+            string jsonified = JsonSerializer.Serialize(trO) + "\n!";
+            await connectionToServer.SendToServer(jsonified);
+
+            State = ConsultationState.WaitingServer;
+
+            await connectionToServer.ReadLineAsync((t) => OnServerQuestionRecieved(t));
+
+        }
 
         private async void StartDeducingVariable(MODEL.Variable variable)
         {
@@ -127,6 +137,23 @@ namespace BestExpertSystem
 
         public void OnServerQuestionRecieved(TransferObj trOb)
         {
+            // If answer has been drawn
+            if (trOb.Answer != "")
+            {
+                MessageBox.Show(trOb.Answer);
+
+                BeginInvoke(new Action(() =>
+                {
+                    lb_Dialog.Text = $"The drawn answer is: {trOb.Answer}";
+                    CB_DialogAnswers.Items.Clear();
+
+                    //CB_DialogAnswers.Items.AddRange(varQ.domain.values.ToArray());
+                }));
+
+                //connectionToServer.SendToServer("#");
+                return;
+            }
+
             var varQ = memory.ParseVariable(trOb.GoalVar);
             BeginInvoke(new Action(() =>
             {
@@ -136,6 +163,9 @@ namespace BestExpertSystem
                 State = ConsultationState.Dialog;
             }));
         }
+
+
+
 
 
         public MODEL.VariableValue AskNextQuestion(MODEL.Variable variable)
