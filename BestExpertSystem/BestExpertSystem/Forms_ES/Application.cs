@@ -79,14 +79,15 @@ namespace BestExpertSystem
             expertSystem = new CORE.ExpertSystem(memory);
 
             GetServerIP();
-            connectionToServer = new SocketClient(ipAddress, 23000);
             this.valueGetEvent = new ManualResetEvent(false);
             //client.ConnectToServer(valueGetEvent);
 
 
-            Task.Run(() => connectionToServer.ConnectToServer(valueGetEvent));
-            valueGetEvent.WaitOne();
-            valueGetEvent.Reset();
+            //connectionToServer = new SocketClient(ipAddress, 23000);
+            //Task.Run(() => connectionToServer.ConnectToServer(valueGetEvent));
+            //valueGetEvent.WaitOne();
+            //valueGetEvent.Reset();
+
 
 
             // Managing events
@@ -692,9 +693,19 @@ namespace BestExpertSystem
 
         private void начатьКонсультациюToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            connectionToServer = new SocketClient(ipAddress, 23000);
+            Task.Run(() => connectionToServer.ConnectToServer(valueGetEvent));
+
             var consultationForm = new ConsultationForm(connectionToServer, memory, expertSystem, this);
             expertSystem.InitES(consultationForm);
             DialogResult dResult = consultationForm.ShowDialog();
+
+            if (connectionToServer.IsConnected)
+            {
+                connectionToServer.CloseAndDisconnect();
+            }
+
 
             //if (dResult == DialogResult.OK)
             //{

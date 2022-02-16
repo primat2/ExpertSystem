@@ -135,7 +135,7 @@ namespace BestExpertSystem
 
 
 
-        public void OnServerQuestionRecieved(TransferObj trOb)
+        public async void OnServerQuestionRecieved(TransferObj trOb)
         {
             // If answer has been drawn
             if (trOb.Answer != "")
@@ -146,11 +146,12 @@ namespace BestExpertSystem
                 {
                     lb_Dialog.Text = $"The drawn answer is: {trOb.Answer}";
                     CB_DialogAnswers.Items.Clear();
+                    BtnDialogResponse.Enabled = false;
 
                     //CB_DialogAnswers.Items.AddRange(varQ.domain.values.ToArray());
                 }));
 
-                //connectionToServer.SendToServer("#");
+                await connectionToServer.SendToServer("#");
                 return;
             }
 
