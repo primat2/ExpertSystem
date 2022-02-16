@@ -72,7 +72,7 @@ namespace BestExpertSystem
         string connectionString = "Server=tcp:primatserver.database.windows.net,1433;Initial Catalog=ExpertSystemDB;Persist Security Info=False;User ID=primat;Password=Ilyamechmat90;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
 
-        public Application()
+        public Application(int EsID = -1)
         {
             instance = this;
             memory = new MODEL.MemoryComponent();
@@ -99,8 +99,10 @@ namespace BestExpertSystem
             UI_VariableWorker = new UI_LOGICK.UI_Variable(this);
             UI_RuleWorker = new UI_LOGICK.UI_Rule(this);
 
-
-            LoadData();
+            if (EsID >= 0)
+            {
+                LoadData(EdID);
+            }
 
             InitializeComponent();
         }
@@ -125,7 +127,7 @@ namespace BestExpertSystem
         }
 
 
-        private void LoadData()
+        private void LoadData(int EsID)
         {
             memory.domains = new DATA_TYPES.OrderedList<MODEL.Domain>();
             memory.variables = new DATA_TYPES.OrderedList<MODEL.Variable>();

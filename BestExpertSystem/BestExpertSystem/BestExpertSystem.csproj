@@ -82,6 +82,12 @@
     <Compile Include="Forms_ES\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms_ES\TMP\CreateUserConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms_ES\TMP\CreateUserConfirm.Designer.cs">
+      <DependentUpon>CreateUserConfirm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms_ES\Work\AddFactForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,6 +153,9 @@
     </Compile>
     <EmbeddedResource Include="Forms_ES\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms_ES\TMP\CreateUserConfirm.resx">
+      <DependentUpon>CreateUserConfirm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms_ES\Work\AddFactForm.resx">
       <DependentUpon>AddFactForm.cs</DependentUpon>

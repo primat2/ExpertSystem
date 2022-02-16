@@ -197,9 +197,9 @@ namespace BestExpertSystem
 
             valueGetEvent.Set();
 
-            RaiseServerConnected(this, new ConnectionDisconnectedEventArgs(
-                Convert.ToString(mClient.Client.RemoteEndPoint))
-                );
+            //RaiseServerConnected(this, new ConnectionDisconnectedEventArgs(
+            //    Convert.ToString(mClient.Client.RemoteEndPoint))
+            //    );
 
 
             //ReadLineAsync(mClient);
