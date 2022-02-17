@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -150,7 +151,33 @@ namespace BestExpertSystem.Forms_ES
 
         private void btnEditES_Click(object sender, EventArgs e)
         {
+            if (lvExpertSystems.SelectedItems.Count == 0) return;
 
+            int selectedEsId = lvExpertSystems.SelectedItems[0].Index + 1;
+            var createES_form = new Application(selectedEsId);
+            DialogResult dResult = createES_form.ShowDialog();
+        }
+
+
+
+
+        SocketClient connectionToServer;
+        private IPAddress ipAddress;
+        private string strPortInput = "23000";
+
+        private void btnConsultation_Click(object sender, EventArgs e)
+        {
+            connectionToServer = new SocketClient(ipAddress, 23000);
+            Task.Run(() => connectionToServer.ConnectToServer(valueGetEvent));
+
+            var consultationForm = new ConsultationForm(this.ES_id, connectionToServer, memory, expertSystem, this);
+            expertSystem.InitES(consultationForm);
+            DialogResult dResult = consultationForm.ShowDialog();
+
+            if (connectionToServer.IsConnected)
+            {
+                connectionToServer.CloseAndDisconnect();
+            }
         }
     }
 }

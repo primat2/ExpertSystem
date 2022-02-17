@@ -30,31 +30,32 @@
         {
             this.btCreateES = new System.Windows.Forms.Button();
             this.lvExpertSystems = new System.Windows.Forms.ListView();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnEditES = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnEditES = new System.Windows.Forms.Button();
             this.btnAuthenticate = new System.Windows.Forms.Button();
             this.DoaminLine_1 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tbPassword = new System.Windows.Forms.TextBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.panelAuth = new System.Windows.Forms.Panel();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this.tbLogin = new System.Windows.Forms.TextBox();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
             this.panelAuthFull = new System.Windows.Forms.Panel();
             this.lblHello = new System.Windows.Forms.Label();
+            this.btnConsultation = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.DoaminLine_1.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.panelAuth.SuspendLayout();
-            this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
+            this.panel7.SuspendLayout();
             this.panelAuthFull.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -85,16 +86,6 @@
             this.lvExpertSystems.UseCompatibleStateImageBehavior = false;
             this.lvExpertSystems.View = System.Windows.Forms.View.Details;
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.CadetBlue;
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 399);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(894, 51);
-            this.panel1.TabIndex = 2;
-            // 
             // columnHeader1
             // 
             this.columnHeader1.Text = "Экспертная система";
@@ -105,6 +96,27 @@
             this.columnHeader2.Text = "Владелец";
             this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnHeader2.Width = 160;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.CadetBlue;
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 399);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(894, 51);
+            this.panel1.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(894, 51);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Лаборатоная работа № 4. Выполнено студентом Гавшином и студентом Петровым\r\n\r\n";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnEditES
             // 
@@ -117,17 +129,6 @@
             this.btnEditES.Text = "Редактировать ЭС";
             this.btnEditES.UseVisualStyleBackColor = false;
             this.btnEditES.Click += new System.EventHandler(this.btnEditES_Click);
-            // 
-            // label1
-            // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(894, 51);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Лаборатоная работа № 4. Выполнено студентом Гавшином и студентом Петровым\r\n\r\n";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnAuthenticate
             // 
@@ -152,6 +153,26 @@
             this.DoaminLine_1.Size = new System.Drawing.Size(411, 45);
             this.DoaminLine_1.TabIndex = 18;
             // 
+            // panel4
+            // 
+            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Controls.Add(this.tbPassword);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(217, 0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(194, 45);
+            this.panel4.TabIndex = 1;
+            // 
+            // tbPassword
+            // 
+            this.tbPassword.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbPassword.Font = new System.Drawing.Font("Comic Sans MS", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbPassword.Location = new System.Drawing.Point(0, 0);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.Size = new System.Drawing.Size(192, 53);
+            this.tbPassword.TabIndex = 2;
+            this.tbPassword.TextChanged += new System.EventHandler(this.tbPassword_TextChanged);
+            // 
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -173,26 +194,6 @@
             this.label2.Text = "Пароль";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // panel4
-            // 
-            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel4.Controls.Add(this.tbPassword);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(217, 0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(194, 45);
-            this.panel4.TabIndex = 1;
-            // 
-            // tbPassword
-            // 
-            this.tbPassword.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbPassword.Font = new System.Drawing.Font("Comic Sans MS", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbPassword.Location = new System.Drawing.Point(0, 0);
-            this.tbPassword.Name = "tbPassword";
-            this.tbPassword.Size = new System.Drawing.Size(192, 53);
-            this.tbPassword.TabIndex = 2;
-            this.tbPassword.TextChanged += new System.EventHandler(this.tbPassword_TextChanged);
-            // 
             // panelAuth
             // 
             this.panelAuth.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
@@ -203,6 +204,26 @@
             this.panelAuth.Name = "panelAuth";
             this.panelAuth.Size = new System.Drawing.Size(411, 52);
             this.panelAuth.TabIndex = 19;
+            // 
+            // panel6
+            // 
+            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel6.Controls.Add(this.tbLogin);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel6.Location = new System.Drawing.Point(217, 0);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(194, 52);
+            this.panel6.TabIndex = 1;
+            // 
+            // tbLogin
+            // 
+            this.tbLogin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbLogin.Font = new System.Drawing.Font("Comic Sans MS", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbLogin.Location = new System.Drawing.Point(0, 0);
+            this.tbLogin.Name = "tbLogin";
+            this.tbLogin.Size = new System.Drawing.Size(192, 53);
+            this.tbLogin.TabIndex = 1;
+            this.tbLogin.TextChanged += new System.EventHandler(this.tbLogin_TextChanged);
             // 
             // panel7
             // 
@@ -224,26 +245,6 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Логин";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel6
-            // 
-            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel6.Controls.Add(this.tbLogin);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(217, 0);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(194, 52);
-            this.panel6.TabIndex = 1;
-            // 
-            // tbLogin
-            // 
-            this.tbLogin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbLogin.Font = new System.Drawing.Font("Comic Sans MS", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbLogin.Location = new System.Drawing.Point(0, 0);
-            this.tbLogin.Name = "tbLogin";
-            this.tbLogin.Size = new System.Drawing.Size(192, 53);
-            this.tbLogin.TabIndex = 1;
-            this.tbLogin.TextChanged += new System.EventHandler(this.tbLogin_TextChanged);
             // 
             // panelAuthFull
             // 
@@ -267,11 +268,24 @@
             this.lblHello.TabIndex = 20;
             this.lblHello.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnConsultation
+            // 
+            this.btnConsultation.BackColor = System.Drawing.Color.YellowGreen;
+            this.btnConsultation.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnConsultation.Location = new System.Drawing.Point(483, 146);
+            this.btnConsultation.Name = "btnConsultation";
+            this.btnConsultation.Size = new System.Drawing.Size(411, 56);
+            this.btnConsultation.TabIndex = 21;
+            this.btnConsultation.Text = "Проконсультироваться";
+            this.btnConsultation.UseVisualStyleBackColor = false;
+            this.btnConsultation.Click += new System.EventHandler(this.btnConsultation_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(894, 450);
+            this.Controls.Add(this.btnConsultation);
             this.Controls.Add(this.lblHello);
             this.Controls.Add(this.btnEditES);
             this.Controls.Add(this.btCreateES);
@@ -282,13 +296,13 @@
             this.Text = "Главное окно";
             this.panel1.ResumeLayout(false);
             this.DoaminLine_1.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            this.panel3.ResumeLayout(false);
             this.panelAuth.ResumeLayout(false);
-            this.panel7.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
+            this.panel7.ResumeLayout(false);
             this.panelAuthFull.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -316,5 +330,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panelAuthFull;
         private System.Windows.Forms.Label lblHello;
+        private System.Windows.Forms.Button btnConsultation;
     }
 }

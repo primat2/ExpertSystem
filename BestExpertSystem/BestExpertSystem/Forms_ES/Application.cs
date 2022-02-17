@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+//using System.Data.Linq;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,6 +49,7 @@ namespace BestExpertSystem
         private ManualResetEvent valueGetEvent;
         SocketClient connectionToServer;
 
+        int ES_id;
 
         // *******************
         // Working with memory
@@ -75,6 +77,7 @@ namespace BestExpertSystem
         public Application(int EsID = -1)
         {
             instance = this;
+            this.ES_id = EsID;
             memory = new MODEL.MemoryComponent();
             expertSystem = new CORE.ExpertSystem(memory);
 
@@ -101,7 +104,13 @@ namespace BestExpertSystem
 
             if (EsID >= 0)
             {
-                LoadData(EdID);
+                LoadData(EsID);
+            }
+            else
+            {
+                memory.domains = new DATA_TYPES.OrderedList<MODEL.Domain>();
+                memory.variables = new DATA_TYPES.OrderedList<MODEL.Variable>();
+                memory.rules = new DATA_TYPES.OrderedList<MODEL.Rule>();
             }
 
             InitializeComponent();
@@ -138,30 +147,50 @@ namespace BestExpertSystem
                 cnn.Open();
 
                 // *** GETTING DOMAINS ***
-                string sqlGetDomainsCount = "SELECT COUNT(*) FROM VarDomains";
+                string sqlGetDomainsCount = "SELECT COUNT(*) FROM VarDomains WHERE VarDomains.es_id = @esID";
                 SqlCommand sqlCommand = new SqlCommand(sqlGetDomainsCount, cnn);
+                sqlCommand.Parameters.AddWithValue("@esID", EsID);
                 int numberOfDomains = (int)sqlCommand.ExecuteScalar();
+
+                string getDomainList = "SELECT * FROM VarDomains WHERE VarDomains.es_id = @esID";
+                SqlCommand getDomainListCommand = new SqlCommand(getDomainList, cnn);
+                getDomainListCommand.Parameters.AddWithValue("@esID", EsID);
+                var domainListReader = getDomainListCommand.ExecuteReader();
+                List<int> idList = new List<int>();
+                List<string> nameList = new List<string>();
+
+                while (domainListReader.Read())
+                {
+                    idList.Add(int.Parse(domainListReader.GetValue(0).ToString()));
+                    nameList.Add(domainListReader.GetValue(1).ToString());
+                }
+                domainListReader.Close();
+
 
                 for (int i = 1; i <= numberOfDomains; i++)
                 {
+                    int domID = idList[i - 1];
+
                     MODEL.Domain newDomain;
                     string domainName = "";
                     List<string> domainValues = new List<string>();
 
-                    string sql_getDomains = "SELECT * FROM VarDomains JOIN DomainValues ON VarDomains.id = DomainValues.domain_id WHERE VarDomains.id = @domID";
+                    //string sql_getDomains = "SELECT * FROM VarDomains JOIN DomainValues ON VarDomains.id = DomainValues.domain_id WHERE VarDomains.id = @domID AND DomainValues.es_id = @esID";
+                    string sql_getDomains = "SELECT * FROM DomainValues WHERE DomainValues.es_id = @esID AND DomainValues.domain_id = @domID";
                     SqlCommand sqlCommand2 = new SqlCommand(sql_getDomains, cnn);
-                    sqlCommand2.Parameters.AddWithValue("@domID", i);
+                    sqlCommand2.Parameters.AddWithValue("@domID", domID);
+                    sqlCommand2.Parameters.AddWithValue("@esID", EsID);
                     SqlDataReader reader = sqlCommand2.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        domainName = (string)reader.GetValue(reader.GetOrdinal("name"));
+                        //domainName = (string)reader.GetValue(reader.GetOrdinal("name"));
                         string domainValue = (string)reader.GetValue(reader.GetOrdinal("value"));
                         domainValues.Add(domainValue);
 
                     }
 
-                    newDomain = new MODEL.Domain(domainName, domainValues);
+                    newDomain = new MODEL.Domain(nameList[i-1], domainValues);
                     memory.domains.Add(newDomain);
                     reader.Close();
                 }
@@ -169,15 +198,17 @@ namespace BestExpertSystem
 
                 // *** GETTING VARIABLES ***
 
-                string sql_getVariables = "SELECT * FROM Variables JOIN VarDomains ON Variables.domain_id = VarDomains.id";
+                //string sql_getVariables = "SELECT * FROM (SELECT * FROM Variables WHERE Variables.es_id = @esID) t1 JOIN(SELECT row_number() OVER(ORDER BY id) as num, name FROM VarDomains WHERE VarDomains.es_id = @esID) t2 ON t1.domain_id = t2.num";
+                string sql_getVariables = "SELECT * FROM Variables JOIN VarDomains ON Variables.domain_id = VarDomains.id AND Variables.es_id = @esID";
                 SqlCommand sqlCommandVars = new SqlCommand(sql_getVariables, cnn);
+                sqlCommandVars.Parameters.AddWithValue("@esID", EsID);
                 SqlDataReader readerVars = sqlCommandVars.ExecuteReader();
 
                 while (readerVars.Read())
                 {
                     string varName = (string)readerVars.GetValue(readerVars.GetOrdinal("name"));
                     string question = (string)readerVars.GetValue(readerVars.GetOrdinal("question"));
-                    string domainName = (string)readerVars.GetValue(7);
+                    string domainName = (string)readerVars.GetValue(8);
                     string var_type = (string)readerVars.GetValue(readerVars.GetOrdinal("var_type"));
 
                     var newVar = new MODEL.Variable(varName, question, memory.ParseDomain(domainName), memory.ParseVarType(var_type));
@@ -191,18 +222,37 @@ namespace BestExpertSystem
                 List<MODEL.Fact> conclusions = new List<MODEL.Fact>(); 
 
                 // GETTING THE NUMBER OF RULES
-                string sqlNumOfRules = "SELECT COUNT(DISTINCT rule_id) FROM Facts";
+                string sqlNumOfRules = "SELECT COUNT(DISTINCT rule_id) FROM Facts WHERE Facts.es_id = @esID";
                 SqlCommand commandNumOfFacts = new SqlCommand(sqlNumOfRules, cnn);
+                commandNumOfFacts.Parameters.AddWithValue("@esID", EsID);
                 int numberOfRules = (int)commandNumOfFacts.ExecuteScalar();
+
+                string getRulesList = "SELECT * FROM EsRules WHERE EsRules.es_id = @esID";
+                SqlCommand getRulesListCommand = new SqlCommand(getRulesList, cnn);
+                getRulesListCommand.Parameters.AddWithValue("@esID", EsID);
+                var RulesListReader = getRulesListCommand.ExecuteReader();
+                List<int> rulesIdList = new List<int>();
+
+                while (RulesListReader.Read())
+                {
+                    rulesIdList.Add(int.Parse(RulesListReader.GetValue(0).ToString()));
+                }
+                RulesListReader.Close();
+
 
                 for (int i = 1; i <= numberOfRules; i++)
                 {
+                    int ruleID = rulesIdList[i - 1];
+                    premises = new List<MODEL.Fact>();
+                    conclusions = new List<MODEL.Fact>();
+
                     string ruleName = "";
                     string explain = "";
                     // GETTING NAME AND EXPLAIN
-                    string ruleInfo = "SELECT * FROM EsRules WHERE EsRules.id = @ruleID";
+                    string ruleInfo = "SELECT * FROM EsRules WHERE EsRules.id = @ruleID AND EsRules.es_id = @esID";
                     SqlCommand ruleInfoCommand = new SqlCommand(ruleInfo, cnn);
-                    ruleInfoCommand.Parameters.AddWithValue("@ruleID", i);
+                    ruleInfoCommand.Parameters.AddWithValue("@ruleID", ruleID);
+                    ruleInfoCommand.Parameters.AddWithValue("@esID", EsID);
                     SqlDataReader ruleInfoReader = ruleInfoCommand.ExecuteReader();
                     ruleInfoReader.Read();
                     ruleName = (string)ruleInfoReader.GetValue(ruleInfoReader.GetOrdinal("name"));
@@ -210,9 +260,10 @@ namespace BestExpertSystem
                     ruleInfoReader.Close();
 
                     // GETTING PREMISES
-                    string sqlPremisesFacts = "SELECT * FROM Facts JOIN Variables ON Facts.var_id = Variables.id WHERE Facts.rule_id = @ruleID AND Facts.is_premise = 1";
+                    string sqlPremisesFacts = "SELECT * FROM Facts JOIN Variables ON Facts.var_id = Variables.id WHERE Facts.rule_id = @ruleID AND Facts.is_premise = 1 AND Facts.es_id = @esID";
                     SqlCommand commandPremisesFacts = new SqlCommand(sqlPremisesFacts, cnn);
-                    commandPremisesFacts.Parameters.AddWithValue("@ruleID", i);
+                    commandPremisesFacts.Parameters.AddWithValue("@ruleID", ruleID);
+                    commandPremisesFacts.Parameters.AddWithValue("@esID", EsID);
                     SqlDataReader readerPremisesFacts = commandPremisesFacts.ExecuteReader();
 
                     while (readerPremisesFacts.Read())
@@ -226,9 +277,10 @@ namespace BestExpertSystem
                     readerPremisesFacts.Close();
 
                     // GETTING CONCLUSIONS
-                    string sqlConclusionFacts = "SELECT * FROM Facts JOIN Variables ON Facts.var_id = Variables.id WHERE Facts.rule_id = @ruleID AND Facts.is_premise = 0";
+                    string sqlConclusionFacts = "SELECT * FROM Facts JOIN Variables ON Facts.var_id = Variables.id WHERE Facts.rule_id = @ruleID AND Facts.is_premise = 0 AND Facts.es_id = @esID";
                     SqlCommand commandConclusionFacts = new SqlCommand(sqlConclusionFacts, cnn);
-                    commandConclusionFacts.Parameters.AddWithValue("@ruleID", i);
+                    commandConclusionFacts.Parameters.AddWithValue("@ruleID", ruleID);
+                    commandConclusionFacts.Parameters.AddWithValue("@esID", EsID);
                     SqlDataReader readerConclusionFacts = commandConclusionFacts.ExecuteReader();
 
                     while (readerConclusionFacts.Read())
@@ -699,7 +751,7 @@ namespace BestExpertSystem
             connectionToServer = new SocketClient(ipAddress, 23000);
             Task.Run(() => connectionToServer.ConnectToServer(valueGetEvent));
 
-            var consultationForm = new ConsultationForm(connectionToServer, memory, expertSystem, this);
+            var consultationForm = new ConsultationForm(this.ES_id, connectionToServer, memory, expertSystem, this);
             expertSystem.InitES(consultationForm);
             DialogResult dResult = consultationForm.ShowDialog();
 

@@ -46,6 +46,7 @@ namespace BestExpertSystem
         private ManualResetEvent valueGetEvent;
 
         private SocketClient connectionToServer;
+        int EsID;
 
         ConsultationState State
         {
@@ -59,9 +60,10 @@ namespace BestExpertSystem
         }
 
 
-        public ConsultationForm(SocketClient ConnectionToServer, MODEL.MemoryComponent Memory, CORE.ExpertSystem ExpertSystem, Application App)
+        public ConsultationForm(int ES_id, SocketClient ConnectionToServer, MODEL.MemoryComponent Memory, CORE.ExpertSystem ExpertSystem, Application App)
         {
             InitializeComponent();
+            this.EsID = ES_id;
             connectionToServer = ConnectionToServer;
             this.valueGetEvent = new ManualResetEvent(false);
 
@@ -121,7 +123,7 @@ namespace BestExpertSystem
 
         private async void StartDeducingVariable(MODEL.Variable variable)
         {
-            var trO = new TransferObj(es_id: 1, goalVar: variable.name);
+            var trO = new TransferObj(es_id: this.EsID, goalVar: variable.name);
             string jsonified = JsonSerializer.Serialize(trO) + "\n!";
             await connectionToServer.SendToServer(jsonified);
 

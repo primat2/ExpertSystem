@@ -163,10 +163,10 @@
             this.panel2.Controls.Add(this.panel1);
             this.panel2.Controls.Add(this.flowLayoutPanel1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(663, 28);
+            this.panel2.Location = new System.Drawing.Point(623, 28);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(256, 497);
+            this.panel2.Size = new System.Drawing.Size(296, 497);
             this.panel2.TabIndex = 2;
             // 
             // panel1
@@ -179,7 +179,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 126);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(256, 371);
+            this.panel1.Size = new System.Drawing.Size(296, 371);
             this.panel1.TabIndex = 4;
             // 
             // panelDescendant
@@ -191,7 +191,7 @@
             this.panelDescendant.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelDescendant.Location = new System.Drawing.Point(0, 275);
             this.panelDescendant.Name = "panelDescendant";
-            this.panelDescendant.Size = new System.Drawing.Size(256, 115);
+            this.panelDescendant.Size = new System.Drawing.Size(296, 115);
             this.panelDescendant.TabIndex = 7;
             // 
             // listViewDescs
@@ -200,7 +200,7 @@
             this.listViewDescs.HideSelection = false;
             this.listViewDescs.Location = new System.Drawing.Point(0, 20);
             this.listViewDescs.Name = "listViewDescs";
-            this.listViewDescs.Size = new System.Drawing.Size(254, 93);
+            this.listViewDescs.Size = new System.Drawing.Size(294, 93);
             this.listViewDescs.TabIndex = 8;
             this.listViewDescs.UseCompatibleStateImageBehavior = false;
             this.listViewDescs.View = System.Windows.Forms.View.List;
@@ -212,7 +212,7 @@
             this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(254, 20);
+            this.panel5.Size = new System.Drawing.Size(294, 20);
             this.panel5.TabIndex = 7;
             // 
             // label3
@@ -235,7 +235,7 @@
             this.panelAntecedent.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelAntecedent.Location = new System.Drawing.Point(0, 160);
             this.panelAntecedent.Name = "panelAntecedent";
-            this.panelAntecedent.Size = new System.Drawing.Size(256, 115);
+            this.panelAntecedent.Size = new System.Drawing.Size(296, 115);
             this.panelAntecedent.TabIndex = 6;
             // 
             // listViewAnts
@@ -244,7 +244,7 @@
             this.listViewAnts.HideSelection = false;
             this.listViewAnts.Location = new System.Drawing.Point(0, 20);
             this.listViewAnts.Name = "listViewAnts";
-            this.listViewAnts.Size = new System.Drawing.Size(254, 93);
+            this.listViewAnts.Size = new System.Drawing.Size(294, 93);
             this.listViewAnts.TabIndex = 7;
             this.listViewAnts.UseCompatibleStateImageBehavior = false;
             this.listViewAnts.View = System.Windows.Forms.View.List;
@@ -256,7 +256,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(254, 20);
+            this.panel4.Size = new System.Drawing.Size(294, 20);
             this.panel4.TabIndex = 6;
             // 
             // label2
@@ -279,7 +279,7 @@
             this.panelDomains.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelDomains.Location = new System.Drawing.Point(0, 45);
             this.panelDomains.Name = "panelDomains";
-            this.panelDomains.Size = new System.Drawing.Size(256, 115);
+            this.panelDomains.Size = new System.Drawing.Size(296, 115);
             this.panelDomains.TabIndex = 5;
             // 
             // listViewDomains
@@ -291,7 +291,7 @@
             listViewItem2});
             this.listViewDomains.Location = new System.Drawing.Point(0, 20);
             this.listViewDomains.Name = "listViewDomains";
-            this.listViewDomains.Size = new System.Drawing.Size(254, 93);
+            this.listViewDomains.Size = new System.Drawing.Size(294, 93);
             this.listViewDomains.TabIndex = 2;
             this.listViewDomains.UseCompatibleStateImageBehavior = false;
             this.listViewDomains.View = System.Windows.Forms.View.List;
@@ -303,7 +303,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(254, 20);
+            this.panel3.Size = new System.Drawing.Size(294, 20);
             this.panel3.TabIndex = 5;
             // 
             // label1
@@ -324,7 +324,7 @@
             this.panelQuestion.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelQuestion.Location = new System.Drawing.Point(0, 0);
             this.panelQuestion.Name = "panelQuestion";
-            this.panelQuestion.Size = new System.Drawing.Size(256, 45);
+            this.panelQuestion.Size = new System.Drawing.Size(296, 45);
             this.panelQuestion.TabIndex = 8;
             // 
             // flowLayoutPanel1
@@ -337,7 +337,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(256, 126);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(296, 126);
             this.flowLayoutPanel1.TabIndex = 1;
             this.flowLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel1_Paint);
             // 
@@ -350,7 +350,7 @@
             this.button1.Location = new System.Drawing.Point(4, 4);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(248, 28);
+            this.button1.Size = new System.Drawing.Size(280, 28);
             this.button1.TabIndex = 0;
             this.button1.Text = "Добавить";
             this.button1.UseVisualStyleBackColor = false;
@@ -365,7 +365,7 @@
             this.buttonChange.Location = new System.Drawing.Point(4, 40);
             this.buttonChange.Margin = new System.Windows.Forms.Padding(4);
             this.buttonChange.Name = "buttonChange";
-            this.buttonChange.Size = new System.Drawing.Size(252, 28);
+            this.buttonChange.Size = new System.Drawing.Size(280, 28);
             this.buttonChange.TabIndex = 1;
             this.buttonChange.Text = "Изменить";
             this.buttonChange.UseVisualStyleBackColor = false;
@@ -380,7 +380,7 @@
             this.buttonDelete.Location = new System.Drawing.Point(4, 76);
             this.buttonDelete.Margin = new System.Windows.Forms.Padding(4);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(252, 28);
+            this.buttonDelete.Size = new System.Drawing.Size(280, 28);
             this.buttonDelete.TabIndex = 2;
             this.buttonDelete.Text = "Удалить";
             this.buttonDelete.UseVisualStyleBackColor = false;
@@ -406,7 +406,7 @@
             this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(663, 497);
+            this.tabControl.Size = new System.Drawing.Size(623, 497);
             this.tabControl.TabIndex = 2;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
@@ -417,7 +417,7 @@
             this.tabPageRules.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageRules.Name = "tabPageRules";
             this.tabPageRules.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageRules.Size = new System.Drawing.Size(655, 468);
+            this.tabPageRules.Size = new System.Drawing.Size(615, 468);
             this.tabPageRules.TabIndex = 0;
             this.tabPageRules.Text = "Правила";
             this.tabPageRules.UseVisualStyleBackColor = true;
@@ -440,7 +440,7 @@
             this.ListViewRules.Margin = new System.Windows.Forms.Padding(4);
             this.ListViewRules.Name = "ListViewRules";
             this.ListViewRules.ShowGroups = false;
-            this.ListViewRules.Size = new System.Drawing.Size(647, 460);
+            this.ListViewRules.Size = new System.Drawing.Size(607, 460);
             this.ListViewRules.TabIndex = 1;
             this.ListViewRules.UseCompatibleStateImageBehavior = false;
             this.ListViewRules.View = System.Windows.Forms.View.Details;
@@ -466,7 +466,7 @@
             this.tabPageVars.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageVars.Name = "tabPageVars";
             this.tabPageVars.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageVars.Size = new System.Drawing.Size(655, 468);
+            this.tabPageVars.Size = new System.Drawing.Size(615, 468);
             this.tabPageVars.TabIndex = 1;
             this.tabPageVars.Text = "Переменные";
             this.tabPageVars.UseVisualStyleBackColor = true;
@@ -492,7 +492,7 @@
             this.listViewVars.Margin = new System.Windows.Forms.Padding(4);
             this.listViewVars.Name = "listViewVars";
             this.listViewVars.ShowGroups = false;
-            this.listViewVars.Size = new System.Drawing.Size(647, 460);
+            this.listViewVars.Size = new System.Drawing.Size(607, 460);
             this.listViewVars.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewVars.TabIndex = 2;
             this.listViewVars.UseCompatibleStateImageBehavior = false;
