@@ -49,6 +49,7 @@
             this.panelAuthFull = new System.Windows.Forms.Panel();
             this.lblHello = new System.Windows.Forms.Label();
             this.btnConsultation = new System.Windows.Forms.Button();
+            this.btnDeleteES = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.DoaminLine_1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -115,7 +116,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(894, 51);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Лаборатоная работа № 4. Выполнено студентом Гавшином и студентом Петровым\r\n\r\n";
+            this.label1.Text = "Выполнено студентом Гавшиным А. ПМИ-4";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnEditES
@@ -280,11 +281,24 @@
             this.btnConsultation.UseVisualStyleBackColor = false;
             this.btnConsultation.Click += new System.EventHandler(this.btnConsultation_Click);
             // 
+            // btnDeleteES
+            // 
+            this.btnDeleteES.BackColor = System.Drawing.Color.IndianRed;
+            this.btnDeleteES.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnDeleteES.Location = new System.Drawing.Point(483, 243);
+            this.btnDeleteES.Name = "btnDeleteES";
+            this.btnDeleteES.Size = new System.Drawing.Size(411, 52);
+            this.btnDeleteES.TabIndex = 22;
+            this.btnDeleteES.Text = "Удалить ЭС";
+            this.btnDeleteES.UseVisualStyleBackColor = false;
+            this.btnDeleteES.Click += new System.EventHandler(this.btnDeleteES_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(894, 450);
+            this.Controls.Add(this.btnDeleteES);
             this.Controls.Add(this.btnConsultation);
             this.Controls.Add(this.lblHello);
             this.Controls.Add(this.btnEditES);
@@ -331,5 +345,6 @@
         private System.Windows.Forms.Panel panelAuthFull;
         private System.Windows.Forms.Label lblHello;
         private System.Windows.Forms.Button btnConsultation;
+        private System.Windows.Forms.Button btnDeleteES;
     }
 }

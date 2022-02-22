@@ -76,6 +76,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataBaseWorker.cs" />
+    <Compile Include="FileParser.cs" />
+    <Compile Include="Forms_ES\ConsultationForm_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms_ES\ConsultationForm_NEW.Designer.cs">
+      <DependentUpon>ConsultationForm_NEW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms_ES\ExplanationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms_ES\ExplanationForm.Designer.cs">
+      <DependentUpon>ExplanationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms_ES\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,15 +102,12 @@
     <Compile Include="Forms_ES\TMP\CreateUserConfirm.Designer.cs">
       <DependentUpon>CreateUserConfirm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms_ES\TransferObj.cs" />
     <Compile Include="Forms_ES\Work\AddFactForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms_ES\Work\AddFactForm.Designer.cs">
       <DependentUpon>AddFactForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms_ES\ConsultationForm.cs" />
-    <Compile Include="Forms_ES\ConsultationForm.Designer.cs">
-      <DependentUpon>ConsultationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CORE\ExpertSystem.cs" />
     <Compile Include="CORE\ExplainSystem.cs" />
@@ -151,6 +162,12 @@
     <Compile Include="Forms_ES\Work\VariableAddForm.Designer.cs">
       <DependentUpon>VariableAddForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms_ES\ConsultationForm_NEW.resx">
+      <DependentUpon>ConsultationForm_NEW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms_ES\ExplanationForm.resx">
+      <DependentUpon>ExplanationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms_ES\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -160,14 +177,12 @@
     <EmbeddedResource Include="Forms_ES\Work\AddFactForm.resx">
       <DependentUpon>AddFactForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms_ES\ConsultationForm.resx">
-      <DependentUpon>ConsultationForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms_ES\Work\DomainAddForm.resx">
       <DependentUpon>DomainAddForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms_ES\Application.resx">
       <DependentUpon>Application.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -190,6 +205,10 @@
     <EmbeddedResource Include="Forms_ES\Work\VariableAddForm.resx">
       <DependentUpon>VariableAddForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="IntegralES.Designer.myes" />
+    <None Include="IntegralES.mes">
+      <SubType>Form</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

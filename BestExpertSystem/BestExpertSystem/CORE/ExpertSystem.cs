@@ -9,7 +9,7 @@ namespace BestExpertSystem.CORE
     public class ExpertSystem
     {
         public MODEL.MemoryComponent workingMemory;
-        private ConsultationForm consultationForm;
+        private ConsultationForm_NEW consultationForm;
 
 
         public ExpertSystem(MODEL.MemoryComponent memory)
@@ -17,7 +17,7 @@ namespace BestExpertSystem.CORE
             this.workingMemory = memory;
         }
 
-        public void InitES(ConsultationForm ConsultationForm)
+        public void InitES(ConsultationForm_NEW ConsultationForm)
         {
             consultationForm = ConsultationForm;
             workingMemory.UntriggeredRules = workingMemory.rules.ToList();
@@ -26,6 +26,10 @@ namespace BestExpertSystem.CORE
         public void DeduceGoalVariable(MODEL.Variable variable)
         {
             workingMemory.GoalVariable = variable;
+
+            workingMemory.TrueFacts.Clear();
+            workingMemory.UntriggeredRules = workingMemory.rules.ToList();
+
             var domainValue = Deduce(variable);
             consultationForm.VariableDeduced(domainValue);
         }
@@ -94,6 +98,9 @@ namespace BestExpertSystem.CORE
                 // Если правда известна, то шик, идём дальше
                 // Если не известна, то что поделать - пытаемся вывести
                 var domainValue = fact2 != null ? fact2.DomainValue : Deduce(fact.Variable);
+
+                if (domainValue == null) return null;
+
                 if (fact.DomainValue.value != domainValue.value)
                 {
                     return null;

@@ -1,0 +1,77 @@
+DOMAINS
+
+DOMAIN Seasons
+Winter
+Spring
+Summer
+Automn
+===
+
+DOMAIN Loved things
+Snow
+Sun
+Games
+===
+
+DOMAIN Activitis
+Go camping
+Go to beach
+Play games
+Stay home
+Go to mountains
+===
+
+DOMAIN Traits
+Homesitting
+Deadinside
+Active
+Naughty
+===
+***ENDBLOCK***
+
+
+VARIABLES
+
+VARIABLE Love
+Loved things
+What do you love?
+Requested
+===
+
+VARIABLE Char
+Traits
+What is your personality?
+Requested
+===
+
+VARIABLE VacationTime
+Seasons
+What season do you like most?
+RequestedDeducible
+===
+
+VARIABLE VacationActivity
+Activitis
+-
+Deducible
+===
+***ENDBLOCK***
+
+
+RULES
+
+RULE Rule 1
+PRE
+VacationTime=Summer
+Char=Active
+SEQ
+VacationActivity=Go to mountains
+===
+
+RULE Rule 2
+PRE
+Love=Sun
+SEQ
+VacationTime=Summer
+===
+***ENDBLOCK***

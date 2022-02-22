@@ -93,8 +93,8 @@ namespace BestExpertSystem
             {
                 consultationGoal = (MODEL.Variable)CB_DialogAnswers.SelectedItem;
                 State = ConsultationState.WaitingServer;
-                //Task.Run(() => expertSystem.DeduceGoalVariable(consultationGoal));
-                Task.Run(() => StartDeducingVariable(consultationGoal));
+                Task.Run(() => expertSystem.DeduceGoalVariable(consultationGoal));
+                //Task.Run(() => StartDeducingVariable(consultationGoal));
                 return;
             }
             else if (State == ConsultationState.Dialog)
@@ -103,12 +103,12 @@ namespace BestExpertSystem
                 currentValue = (MODEL.VariableValue)CB_DialogAnswers.SelectedItem;
                 State = ConsultationState.WaitingServer;
                 this.valueGetEvent.Set();
-                Task.Run(() => ContinueDecucing(currentValue));
+                //Task.Run(() => ContinueDecucing(currentValue));
                 
             }
         }
 
-
+        #region SocketLogick
         private async void ContinueDecucing(MODEL.VariableValue variable)
         {
             var trO = new TransferObj(answer: variable.value);
@@ -132,10 +132,6 @@ namespace BestExpertSystem
             await connectionToServer.ReadLineAsync((t) => OnServerQuestionRecieved(t));
 
         }
-
-
-
-
 
         public async void OnServerQuestionRecieved(TransferObj trOb)
         {
@@ -167,14 +163,16 @@ namespace BestExpertSystem
             }));
         }
 
-
-
+        #endregion
 
 
         public MODEL.VariableValue AskNextQuestion(MODEL.Variable variable)
         {
             BeginInvoke(new Action(() =>
             {
+                // Standalone app
+                State = ConsultationState.Dialog;
+
                 lb_Dialog.Text = variable.question;
                 CB_DialogAnswers.Items.Clear();
                 CB_DialogAnswers.Items.AddRange(variable.domain.values.ToArray());
@@ -203,6 +201,9 @@ namespace BestExpertSystem
                     lb_Dialog.Text = $"Answer: {value.ToString()}";
                 }
 
+                // Standalone app
+                CB_DialogAnswers.Items.Clear();
+                CB_DialogAnswers.Enabled = false;
             }));
         }
 

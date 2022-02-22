@@ -145,7 +145,20 @@ namespace BestExpertSystem.Forms_ES
 
         private void btCreateES_Click(object sender, EventArgs e)
         {
-            var createES_form = new Application();
+            string newFormName = string.Empty;
+            // Форма запроса названия
+            var chooseNameForm = new Forms_ES.TMP.ChooseEsName();
+            DialogResult result = chooseNameForm.ShowDialog();
+
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
+
+            newFormName = chooseNameForm.TbEsName.Text;
+
+            // Форма для работы с ЭС
+            var createES_form = new Application(newFormName, userID: authenticatedUserID);
             DialogResult dResult = createES_form.ShowDialog();
         }
 
@@ -153,8 +166,11 @@ namespace BestExpertSystem.Forms_ES
         {
             if (lvExpertSystems.SelectedItems.Count == 0) return;
 
-            int selectedEsId = lvExpertSystems.SelectedItems[0].Index + 1;
-            var createES_form = new Application(selectedEsId);
+            //int selectedEsId = lvExpertSystems.SelectedItems[0].Index + 1;
+            int selectedEsId = (int)lvExpertSystems.SelectedItems[0].Tag;
+            string formName = lvExpertSystems.SelectedItems[0].Text;
+
+            var createES_form = new Application(formName, EsID: selectedEsId, userID: authenticatedUserID);
             DialogResult dResult = createES_form.ShowDialog();
         }
 
@@ -167,17 +183,22 @@ namespace BestExpertSystem.Forms_ES
 
         private void btnConsultation_Click(object sender, EventArgs e)
         {
-            connectionToServer = new SocketClient(ipAddress, 23000);
-            Task.Run(() => connectionToServer.ConnectToServer(valueGetEvent));
+            //connectionToServer = new SocketClient(ipAddress, 23000);
+            //Task.Run(() => connectionToServer.ConnectToServer(valueGetEvent));
 
-            var consultationForm = new ConsultationForm(this.ES_id, connectionToServer, memory, expertSystem, this);
-            expertSystem.InitES(consultationForm);
-            DialogResult dResult = consultationForm.ShowDialog();
+            //var consultationForm = new ConsultationForm(this.ES_id, connectionToServer, memory, expertSystem, this);
+            //expertSystem.InitES(consultationForm);
+            //DialogResult dResult = consultationForm.ShowDialog();
 
-            if (connectionToServer.IsConnected)
-            {
-                connectionToServer.CloseAndDisconnect();
-            }
+            //if (connectionToServer.IsConnected)
+            //{
+            //    connectionToServer.CloseAndDisconnect();
+            //}
+        }
+
+        private void btnDeleteES_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

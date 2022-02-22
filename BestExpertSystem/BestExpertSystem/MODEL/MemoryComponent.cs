@@ -52,7 +52,7 @@ namespace BestExpertSystem.MODEL
             if (domain.Order == -1)
             {
                 domains.Add(domain);
-                //domain.Order = memory.domains.Count;
+                domain.Order = domains.Count;
             }
             else
             {
@@ -70,7 +70,7 @@ namespace BestExpertSystem.MODEL
             if (variable.Order == -1)
             {
                 variables.Add(variable);
-                variable.Order = domains.Count;
+                variable.Order = variables.Count;
             }
             else
             {
